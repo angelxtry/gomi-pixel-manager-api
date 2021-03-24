@@ -3,6 +3,17 @@
 ## 기본 웹프레임워크
 Fastify
 
+## Environments
+
+### 필수항목
+이 프로젝트를 실행하기 위해서는 최상위 디렉토리에 위치한 `.env` 파일의 환경변수 정의가 필요합니다. 이 프로젝트의 메인테이너에게 문의해 파일을 전달받아 주세요.
+
+### 환경구분
+다음과 같은 세 가지 환경을 사용하고 있으며, 이외에도 테스트 유닛을 도입하게 되면 test 환경이 추가될 예정입니다.
+- development
+- staging
+- production
+
 ## Database
 MySQL or mariaDB
 
