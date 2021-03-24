@@ -1,5 +1,34 @@
 {
+  "scripts": {
+    "start": "nodemon server.js --exec babel-node"
+  },
   "dependencies": {
-    "fastify": "^3.14.0"
+    "@babel/node": "^7.13.12",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "fastify": "^3.14.0",
+    "fastify-env": "^2.1.0",
+    "fastify-express": "^0.3.2",
+    "fastify-plugin": "^3.0.0",
+    "fastify-routes": "^3.0.1",
+    "fastify-sequelize": "^1.0.4",
+    "fastify-static": "^4.0.1",
+    "fastify-swagger": "^4.4.2",
+    "fastify-url-data": "^3.0.3",
+    "mysql2": "^2.2.5",
+    "pino-pretty": "^4.7.1",
+    "sequelize": "^6.6.2",
+    "sequelize-cli": "^6.2.0",
+    "webpack": "^5.25.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset": "^1.1.7",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "fastify-webpack-hmr": "^3.0.0",
+    "nodemon": "^2.0.7"
   }
 }
