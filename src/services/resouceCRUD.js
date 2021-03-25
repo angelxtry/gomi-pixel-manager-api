@@ -14,7 +14,7 @@ export class ResourceCRUDService {
     if (!this.db) throw new Error("cant get db from fastify app.");
 
     this.err = new Error();
-    this.Model = this.db[subjectName];
+    this[subjectName] = this.db[subjectName];
   }
 
   /**
@@ -25,7 +25,7 @@ export class ResourceCRUDService {
    * @memberof ResourceCRUDService
    */
   async getAll({ filter = {} }) {
-    const resources = await this.Model.findAll();
+    const resources = await this[this.subjectName].findAll();
 
     return resources;
   }
@@ -53,11 +53,11 @@ export class ResourceCRUDService {
    * @memberof ResourceCRUDService
    */
   async create({ resourceData }) {
-    console.log(resourceData);
+    const Model = this[this.subjectName];
     this.__error(() => !resourceData, 400, `${this.resourceVar} is needed`);
 
-    console.log("create service", this.Model);
-    const createdResource = await this.Model.create(resourceData);
+    console.log("create service", Model);
+    const createdResource = await Model.create(resourceData);
     console.log(createdResource);
 
     return createdResource;
@@ -98,7 +98,7 @@ export class ResourceCRUDService {
   async __getResource(id) {
     const checkDataIsEmpty = (data) =>
       data instanceof Array ? data.length : data;
-    const resourceData = await this.Model.findByPk(id);
+    const resourceData = await this[this.subjectName].findByPk(id);
 
     this.__error(
       () => !checkDataIsEmpty(resourceData),

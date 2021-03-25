@@ -1,10 +1,20 @@
 const brandProperties = {
   id: { type: "number" },
   name: { type: "string" },
-  pixelCode: { type: "string", nullable: true },
   platformApiId: { type: "number", nullable: true },
   createdAt: { type: "string" },
   updatedAt: { type: "string" },
+  PixelCodes: {
+    type: "array",
+    items: {
+      type: "object",
+      properties: {
+        id: { type: "number" },
+        code: { type: "string" },
+        shopName: { type: "string" },
+      },
+    },
+  },
 };
 
 const tags = ["brand"];

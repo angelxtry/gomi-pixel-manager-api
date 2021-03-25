@@ -1,4 +1,4 @@
-const productPageProperties = {
+const pixelCodeProperties = {
   id: { type: "number" },
   brandId: { type: "number" },
   Brand: {
@@ -8,14 +8,13 @@ const productPageProperties = {
       name: { type: "string" },
     },
   },
-  title: { type: "string" },
-  uniqueNumber: { type: "string", nullable: true },
-  sourceUrl: { type: "string", nullable: true },
+  code: { type: "string" },
+  shopName: { type: "string", nullable: true },
   createdAt: { type: "string" },
   updatedAt: { type: "string" },
 };
 
-const tags = ["productPage"];
+const tags = ["pixelCode"];
 
 const paramsJsonSchema = {
   type: "object",
@@ -35,13 +34,13 @@ const queryStringJsonSchema = {
 
 const bodyCreateJsonSchema = {
   type: "object",
-  properties: productPageProperties,
-  required: ["brandId", "title"],
+  properties: pixelCodeProperties,
+  required: ["brandId", "code"],
 };
 
 const bodyUpdateJsonSchema = {
   type: "object",
-  properties: productPageProperties,
+  properties: pixelCodeProperties,
 };
 
 export const getAllSchema = {
@@ -52,7 +51,7 @@ export const getAllSchema = {
       type: "array",
       items: {
         type: "object",
-        properties: productPageProperties,
+        properties: pixelCodeProperties,
       },
     },
   },
@@ -65,7 +64,7 @@ export const getOneSchema = {
   response: {
     200: {
       type: "object",
-      properties: productPageProperties,
+      properties: pixelCodeProperties,
     },
   },
 };
@@ -76,7 +75,7 @@ export const createSchema = {
   response: {
     201: {
       type: "object",
-      properties: productPageProperties,
+      properties: pixelCodeProperties,
     },
   },
 };
@@ -88,7 +87,7 @@ export const updateSchema = {
   response: {
     200: {
       type: "object",
-      properties: productPageProperties,
+      properties: pixelCodeProperties,
     },
   },
 };
@@ -99,7 +98,7 @@ export const deleteSchema = {
   response: {
     200: {
       type: "object",
-      properties: productPageProperties,
+      properties: pixelCodeProperties,
     },
   },
 };

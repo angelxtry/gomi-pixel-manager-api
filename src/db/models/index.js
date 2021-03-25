@@ -3,9 +3,10 @@ import config from "../config";
 
 // 모델 생성자
 import brandModel from "./brand";
-import productPageModel from "./productpage";
+import productPageModel from "./productPage";
+import pixelCodeModel from "./pixelCode";
 
-const modelMakers = [brandModel, productPageModel];
+const modelMakers = [brandModel, productPageModel, pixelCodeModel];
 
 // DB 셋업
 const db = {};

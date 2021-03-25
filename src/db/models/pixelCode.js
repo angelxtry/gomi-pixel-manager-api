@@ -1,6 +1,6 @@
 import { Model } from "sequelize";
 
-class ProductPage extends Model {
+class PixelCode extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
@@ -8,7 +8,7 @@ class ProductPage extends Model {
    */
   static associate(models) {
     // define association here
-    ProductPage.belongsTo(models.Brand, {
+    PixelCode.belongsTo(models.Brand, {
       targetKey: "id",
       foreignKey: "brandId",
     });
@@ -16,17 +16,16 @@ class ProductPage extends Model {
 }
 
 export default (sequelize, DataTypes) => {
-  ProductPage.init(
+  PixelCode.init(
     {
-      title: DataTypes.STRING,
-      uniqueNumber: DataTypes.INTEGER,
-      sourceUrl: DataTypes.STRING,
-      brandId: DataTypes.INTEGER,
+      code: DataTypes.STRING,
+      shopName: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "ProductPage",
+      modelName: "PixelCode",
     }
   );
-  return ProductPage;
+
+  return PixelCode;
 };

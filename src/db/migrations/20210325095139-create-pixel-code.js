@@ -2,20 +2,17 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface
-      .createTable("ProductPages", {
+      .createTable("PixelCodes", {
         id: {
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        title: {
+        code: {
           type: Sequelize.STRING,
         },
-        uniqueNumber: {
-          type: Sequelize.INTEGER,
-        },
-        sourceUrl: {
+        shopName: {
           type: Sequelize.STRING,
         },
         createdAt: {
@@ -28,13 +25,13 @@ module.exports = {
         },
       })
       .then(() => {
-        queryInterface.addColumn("ProductPages", "BrandId", {
+        queryInterface.addColumn("PixelCodes", "BrandId", {
           type: Sequelize.INTEGER,
           references: { model: "Brands", key: "id" },
         });
       });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("ProductPages");
+    await queryInterface.dropTable("PixelCodes");
   },
 };

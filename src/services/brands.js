@@ -4,6 +4,7 @@ export class BrandService extends ResourceCRUDService {
   constructor(app) {
     super(app, "Brand", "brand");
   }
+
   // /**
   //  * Creates an instance of BrandService.
   //  * @param {object} app fastify app
@@ -14,23 +15,23 @@ export class BrandService extends ResourceCRUDService {
   //   this.app = app;
   //   this.db = this.app.db;
   //   if (!this.db) throw new Error("cant get db from fastify app.");
-
+  //
   //   this.err = new Error();
   //   this.Brand = this.db.Brand;
   // }
 
-  // /**
-  //  * function to get all
-  //  *
-  //  * @param { filter: object } { filter = {} }
-  //  * @returns {Promise<{ id: number }>[]} array
-  //  * @memberof BrandService
-  //  */
-  // async getAll({ filter = {} }) {
-  //   const brands = await this.Brand.findAll();
+  /**
+   * function to get all
+   *
+   * @param { filter: object } { filter = {} }
+   * @returns {Promise<{ id: number }>[]} array
+   * @memberof BrandService
+   */
+  async getAll({ filter = {} }) {
+    const brands = await this.Brand.findAll({ include: this.db.PixelCode });
 
-  //   return brands;
-  // }
+    return brands;
+  }
 
   // /**
   //  * function to get one
@@ -89,19 +90,22 @@ export class BrandService extends ResourceCRUDService {
    * PRIVATE
    **********************/
 
-  // async __getBrand(id) {
-  //   const checkDataIsEmpty = (data) =>
-  //     data instanceof Array ? data.length : data;
-  //   const brandData = await this.Brand.findByPk(id);
+  async __getResource(id) {
+    const checkDataIsEmpty = (data) =>
+      data instanceof Array ? data.length : data;
+    const brand = await this.Brand.findOne({
+      where: { id },
+      include: this.db.PixelCode,
+    });
 
-  //   this.__error(
-  //     () => !checkDataIsEmpty(brandData),
-  //     412,
-  //     `can't get the brand ${id}`
-  //   );
+    this.__error(
+      () => !checkDataIsEmpty(brand),
+      412,
+      `can't get the ${this.resourceVar} ${id}`
+    );
 
-  //   return brandData;
-  // }
+    return brand;
+  }
 
   // /**
   //  * Throw error to response error.

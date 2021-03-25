@@ -8,9 +8,8 @@ class Brand extends Model {
    */
   static associate(models) {
     // define association here
-    Brand.hasMany(models.ProductPage, {
-      foreignKey: "brandId",
-    });
+    Brand.hasMany(models.ProductPage);
+    Brand.hasMany(models.PixelCode);
   }
 }
 
@@ -18,7 +17,6 @@ export default (sequelize, DataTypes) => {
   Brand.init(
     {
       name: DataTypes.STRING,
-      pixelCode: DataTypes.STRING,
       platformApiId: DataTypes.INTEGER,
     },
     {

@@ -19,20 +19,20 @@ export class ProductPageService extends ResourceCRUDService {
   //   this.ProductPage = this.db.ProductPage;
   // }
 
-  // /**
-  //  * function to get all
-  //  *
-  //  * @param { filter: object } { filter = {} }
-  //  * @returns {Promise<{ id: number }>[]} array
-  //  * @memberof ProductPageService
-  //  */
-  // async getAll({ filter = {} }) {
-  //   // const productPages = await db.select('*').from('ProductPage').where(filter);
-  //   console.log(new this.ProductPage());
-  //   const productPages = await this.ProductPage.findAll();
+  /**
+   * function to get all
+   *
+   * @param { filter: object } { filter = {} }
+   * @returns {Promise<{ id: number }>[]} array
+   * @memberof ProductPageService
+   */
+  async getAll({ filter = {} }) {
+    const productPages = await this.ProductPage.findAll({
+      include: this.db.Brand,
+    });
 
-  //   return productPages;
-  // }
+    return productPages;
+  }
 
   // /**
   //  * function to get one
