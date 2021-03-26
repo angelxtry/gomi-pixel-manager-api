@@ -1,10 +1,12 @@
 import path from "path";
 
 import Fastify from "fastify";
-import cors from "cors";
+import fastifyCors from "fastify-cors";
 import fastifyUrlData from "fastify-url-data";
 import fastifyExpress from "fastify-express";
 import fastifyStatic from "fastify-static";
+
+import cors from "./plugins/cors";
 
 import db from "./db";
 
@@ -51,7 +53,7 @@ export async function build() {
    * 5. middlewares
    * See more : https://www.fastify.io/docs/latest/Middleware/
    */
-  fastify.use(cors());
+  fastify.use(fastifyCors, cors);
   // fastify.use(require('dns-prefetch-control')())
   // fastify.use(require('frameguard')())
   // fastify.use(require('hsts')())
