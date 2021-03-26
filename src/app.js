@@ -53,7 +53,7 @@ export async function build() {
    * 5. middlewares
    * See more : https://www.fastify.io/docs/latest/Middleware/
    */
-  fastify.use(fastifyCors, cors);
+  fastify.register(fastifyCors, cors);
   // fastify.use(require('dns-prefetch-control')())
   // fastify.use(require('frameguard')())
   // fastify.use(require('hsts')())
