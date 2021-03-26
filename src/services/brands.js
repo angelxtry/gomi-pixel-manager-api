@@ -48,30 +48,37 @@ export class BrandService extends ResourceCRUDService {
   //   return brand;
   // }
 
-  // /**
-  //  * function to create one
-  //  *
-  //  * @param { {brand: object} } { brand }
-  //  * @returns {Promise<number>} created id
-  //  * @memberof BrandService
-  //  */
-  // async create({ brand }) {
-  // }
+  /**
+   * function to create one
+   *
+   * @param { {brand: object} } { brand }
+   * @returns {Promise<number>} created id
+   * @memberof BrandService
+   */
+  async create({ resourceData }) {
+    this.__error(() => !resourceData, 400, `${this.resourceVar} is needed`);
 
-  // /**
-  //  * function to update one
-  //  *
-  //  * @param { { id: number, brand: object } } { id, brand = {} }
-  //  * @returns {Promise<{ id: number }>} updated
-  //  * @memberof BrandService
-  //  */
-  // async update({ id, brand = {} }) {
-  //   const brandBefore = await this.__getBrand(id);
+    const brand = await this.Brand.create(resourceData);
+    await this.__bulkUpsertAssociatedPixelCodes(brand, resourceData.PixelCodes);
 
-  //   const updatedBrand = await brandBefore.update(brand);
+    return await this.__getResource(brand.id);
+  }
 
-  //   return updatedBrand;
-  // }
+  /**
+   * function to update one
+   *
+   * @param { { id: number, brand: object } } { id, brand = {} }
+   * @returns {Promise<{ id: number }>} updated
+   * @memberof BrandService
+   */
+  async update({ id, resourceData = {} }) {
+    let brand = await this.__getResource(id);
+
+    await this.__bulkUpsertAssociatedPixelCodes(brand, resourceData.PixelCodes);
+    brand = await brand.update(resourceData);
+
+    return await this.__getResource(brand.id);
+  }
 
   // /**
   //  * function to destroy one
@@ -105,6 +112,30 @@ export class BrandService extends ResourceCRUDService {
     );
 
     return brand;
+  }
+
+  async __bulkUpsertAssociatedPixelCodes(brand, pixelCodeDataList) {
+    const findPixelCodeOfBrand = (id) =>
+      (brand.PixelCodes || []).filter((record) => record.id === id)[0];
+    const compareDataValueIsSame = (origin, target) =>
+      JSON.stringify(origin) === JSON.stringify({ ...origin, ...target });
+    const upsertPixelCode = async (pixelCodeData) => {
+      const pixelCode = findPixelCodeOfBrand(pixelCodeData.id);
+      if (pixelCode) {
+        if (!compareDataValueIsSame(pixelCode.dataValues, pixelCodeData)) {
+          await pixelCode.update(pixelCodeData);
+        }
+      } else {
+        await this.db.PixelCode.create({
+          ...pixelCodeData,
+          brandId: brand.id,
+        });
+      }
+    };
+
+    for (const pixelCodeData of pixelCodeDataList) {
+      await upsertPixelCode(pixelCodeData);
+    }
   }
 
   // /**
