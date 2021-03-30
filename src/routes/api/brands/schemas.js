@@ -11,7 +11,7 @@ const brandProperties = {
       properties: {
         id: { type: "number" },
         code: { type: "string" },
-        shopName: { type: "string" },
+        shopName: { type: "string", nullable: true },
       },
     },
   },
