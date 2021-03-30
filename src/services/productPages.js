@@ -96,21 +96,26 @@ export class ProductPageService extends ResourceCRUDService {
   //   return await productPageBefore.destroy();
   // }
 
-  // /**********************
-  //  * PRIVATE
-  //  **********************/
+  /**********************
+   * PRIVATE
+   **********************/
 
-  // async __getProductPage(id) {
-  //   const productPageData = await this.ProductPage.findOne({ where: { id } });
+  async __getResource(id) {
+    const checkDataIsEmpty = (data) =>
+      data instanceof Array ? data.length : data;
+    const productPage = await this.ProductPage.findOne({
+      where: { id },
+      include: this.db.Brand,
+    });
 
-  //   this.__error(
-  //     () => !(productPageData && productPageData.length),
-  //     412,
-  //     `can't get the productPage ${id}`
-  //   );
+    this.__error(
+      () => !checkDataIsEmpty(productPage),
+      412,
+      `can't get the ${this.resourceVar} ${id}`
+    );
 
-  //   return productPageData;
-  // }
+    return productPage;
+  }
 
   // /**
   //  * Throw error to response error.
