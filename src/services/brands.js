@@ -1,3 +1,4 @@
+import { each } from "../utils/iter";
 import { ResourceCRUDService } from "./resouceCRUD";
 
 export class BrandService extends ResourceCRUDService {
@@ -87,11 +88,12 @@ export class BrandService extends ResourceCRUDService {
   //  * @returns {Promise<object>} destroyed
   //  * @memberof BrandService
   //  */
-  // async destroy({ id }) {
-  //   const brandBefore = await this.__getBrand(id);
+  async destroy({ id }) {
+    const brandBefore = await this.__getResource(id);
 
-  //   return await brandBefore.destroy();
-  // }
+    await each((pixelCode) => pixelCode.destroy(), brandBefore.PixelCodes);
+    return await brandBefore.destroy();
+  }
 
   /**********************
    * PRIVATE
