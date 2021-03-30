@@ -10,14 +10,66 @@ import {
 export default async function productPageRouter(app, options) {
   const productPageService = new ProductPageService(app);
 
-  // get all
+  /**
+   * get all
+   * 
+   * === Basic Response
+   * Array of ProductPage Object (include 'Brand')
+      [
+          {
+              "id": 1,
+              "brandId": 1,
+              "Brand": {
+                  "id": 1,
+                  "name": "Bergnaum, O'Kon and Schaefer"
+              },
+              "title": "Practical Fresh Pants",
+              "uniqueNumber": "92855",
+              "sourceUrl": "http://dangelo.org/Practical-Fresh-Pants",
+              "createdAt": "2021-03-25T14:22:53.000Z",
+              "updatedAt": "2021-03-25T14:22:53.000Z"
+          },
+          {
+              "id": 2,
+              "brandId": 1,
+              "Brand": {
+                  "id": 1,
+                  "name": "Bergnaum, O'Kon and Schaefer"
+              },
+              "title": "Small Metal Hat",
+              "uniqueNumber": "85126",
+              "sourceUrl": "http://dangelo.org/Small-Metal-Hat",
+              "createdAt": "2021-03-25T14:22:53.000Z",
+              "updatedAt": "2021-03-25T14:22:53.000Z"
+          },
+          ...
+      ]
+   */
   app.get("/", { schema: getAllSchema }, async (request, reply) => {
     app.log.info("request.query", request.query);
     const productPages = await productPageService.getAll({});
     return productPages;
   });
 
-  // get one
+  /**
+   * get one
+   * 
+   * ===
+   * One Brand Object (include 'Brand')
+      {
+          "id": 1,
+          "brandId": 1,
+          "Brand": {
+              "id": 1,
+              "name": "Bergnaum, O'Kon and Schaefer"
+          },
+          "title": "Practical Fresh Pants",
+          "uniqueNumber": "92855",
+          "sourceUrl": "http://dangelo.org/Practical-Fresh-Pants",
+          "createdAt": "2021-03-25T14:22:53.000Z",
+          "updatedAt": "2021-03-25T14:22:53.000Z"
+      }
+   */
   app.get("/:id", { schema: getOneSchema }, async (request, reply) => {
     const {
       params: { id },
@@ -30,6 +82,7 @@ export default async function productPageRouter(app, options) {
   });
 
   // create
+  // => Created ProductPage Object (include 'Brand')
   app.post("/", { schema: createSchema }, async (request, reply) => {
     const { body } = request;
 
@@ -39,6 +92,7 @@ export default async function productPageRouter(app, options) {
   });
 
   // update
+  // => Updated ProductPage Object (include 'Brand')
   app.patch("/:id", { schema: updateSchema }, async (request, reply) => {
     const {
       params: { id },
