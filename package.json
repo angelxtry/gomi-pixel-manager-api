@@ -1,6 +1,10 @@
 {
   "scripts": {
-    "start": "nodemon server.js --exec babel-node"
+    "start": "nodemon server.js --exec babel-node",
+    "db:create": "sequelize-cli db:create",
+    "db:migrate": "sequelize-cli db:migrate",
+    "production:db:create": "NODE_ENV=production sequelize-cli db:create",
+    "production:db:migrate": "NODE_ENV=production sequelize-cli db:migrate"
   },
   "dependencies": {
     "@babel/node": "^7.13.12",

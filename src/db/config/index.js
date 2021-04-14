@@ -1,4 +1,5 @@
 const {
+  NODE_ENV,
   DATABASE_SERVICE,
   DATABASE_HOST,
   DATABASE_PORT,
@@ -63,4 +64,4 @@ module.exports = {
 
     ...common,
   },
-}[process.NODE_ENV || "development"];
+}[NODE_ENV || "development"];

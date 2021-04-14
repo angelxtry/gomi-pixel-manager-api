@@ -1,10 +1,10 @@
 import { build } from './src/app';
-import { PORT } from './src/environment'
+import { PORT, HOST } from './src/environment'
 
 build()
   .then(app => {
     // run the server!
-    app.listen(PORT, (err, address) => {
+    app.listen(PORT, HOST, (err, address) => {
       if (err) {
         app.log.error(err);
         process.exit(1);

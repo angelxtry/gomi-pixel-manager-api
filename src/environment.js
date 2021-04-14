@@ -1,14 +1,13 @@
 const dotenv = require('dotenv')
 const path = require('path')
 
-dotenv.config({ path: path.resolve(__dirname, '../.env') })
+// dotenv.config({ path: path.resolve(__dirname, '../.env') })
 
 let envPath;
 
 // validate the NODE_ENV
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-console.log(NODE_ENV)
 switch (NODE_ENV) {
 case 'development':
   envPath = path.resolve(__dirname, '../.env');
@@ -26,11 +25,13 @@ default:
 
 dotenv.config({ path: envPath });
 
-const enviroment = {
+const environment = {
   /* GENERAL */
   NODE_ENV,
   TIME_ZONE: process.env.TIME_ZONE,
   PORT: process.env.PORT || 8080,
+  HOST: process.env.HOST || '127.0.0.1',
+
   /* DATABASE INFORMATION */
   DB_NOSQL_HOST: process.env.DB_NOSQL_HOST,
   DB_NOSQL_USER: process.env.DB_NOSQL_USER,
@@ -46,4 +47,6 @@ const enviroment = {
   DATABASE_DBNAME: process.env.DATABASE_DBNAME,
 };
 
-module.exports = enviroment;
+console.log({ envPath, ...environment })
+
+module.exports = environment;
