@@ -6,6 +6,7 @@ import fastifyUrlData from "fastify-url-data";
 import fastifyExpress from "fastify-express";
 import fastifyStatic from "fastify-static";
 
+import { NODE_ENV } from "./environment";
 import cors from "./plugins/cors";
 
 import db from "./db";
@@ -20,7 +21,7 @@ import db from "./db";
 
 // implement inversion of control to make the code testable
 export async function build() {
-  console.log("\n--- Booting web server...", process.NODE_ENV || "development");
+  console.log("\n--- Booting web server...", NODE_ENV || "development");
 
   const fastify = Fastify({
     bodyLimit: 1048576 * 2,

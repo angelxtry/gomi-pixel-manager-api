@@ -4,6 +4,12 @@
   },
   "dependencies": {
     "@babel/node": "^7.13.12",
+    "babel-cli": "^6.26.0",
+    "babel-preset": "^1.1.7",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "dotenv": "^8.2.0",
     "fastify": "^3.14.0",
     "fastify-cors": "^5.2.0",
@@ -22,12 +28,6 @@
     "webpack": "^5.25.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset": "^1.1.7",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-es2017": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
     "faker": "^5.4.0",
     "fastify-webpack-hmr": "^3.0.0",
     "nodemon": "^2.0.7"

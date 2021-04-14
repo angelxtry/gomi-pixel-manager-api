@@ -1,5 +1,5 @@
 import brandRouter from "./brands";
-import pixelCodeRouter from "./PixelCodes";
+import pixelCodeRouter from "./pixelCodes";
 import productPageRouter from "./productPages";
 
 export default async function apiRoutes(app, options) {

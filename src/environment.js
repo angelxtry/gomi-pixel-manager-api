@@ -7,6 +7,8 @@ let envPath;
 
 // validate the NODE_ENV
 const NODE_ENV = process.env.NODE_ENV || 'development';
+
+console.log(NODE_ENV)
 switch (NODE_ENV) {
 case 'development':
   envPath = path.resolve(__dirname, '../.env');
