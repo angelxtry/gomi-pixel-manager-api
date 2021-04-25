@@ -92,7 +92,7 @@ export const updateSchema = {
   },
 };
 
-export const deleteSchema = {
+export const destroySchema = {
   tags,
   params: paramsJsonSchema,
   response: {
