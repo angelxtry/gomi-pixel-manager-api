@@ -17,9 +17,9 @@ yarn install
 
 ### 4. 데이터베이스 셋업
 ```
-sequelize-cli db:create
-sequelize-cli db:migrate
-sequelize-cli db:seed
+sequelize-cli db:create     or  yarn db:create
+sequelize-cli db:migrate    or  yarn db:migrate
+sequelize-cli db:seed:all   or  yarn db:seed
 ```
 
 ### 5. 서버 시작
