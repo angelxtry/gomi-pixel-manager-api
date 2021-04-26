@@ -6,6 +6,17 @@ const productPageProperties = {
     properties: {
       id: { type: "number" },
       name: { type: "string" },
+      PixelCodes: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            id: { type: "number" },
+            code: { type: "string" },
+            shopName: { type: "string", nullable: true },
+          }
+        }
+      }
     },
   },
   title: { type: "string" },

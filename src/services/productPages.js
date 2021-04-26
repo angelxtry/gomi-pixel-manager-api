@@ -105,7 +105,10 @@ export class ProductPageService extends ResourceCRUDService {
       data instanceof Array ? data.length : data;
     const productPage = await this.ProductPage.findOne({
       where: { id },
-      include: this.db.Brand,
+      include: {
+        model: this.db.Brand,
+        include: this.db.PixelCode
+      },
     });
 
     this.__error(
