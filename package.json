@@ -3,6 +3,7 @@
     "start": "nodemon server.js --exec babel-node",
     "db:create": "sequelize-cli db:create",
     "db:migrate": "sequelize-cli db:migrate",
+    "db:seed": "sequelize-cli db:seed:all",
     "production:db:create": "NODE_ENV=production sequelize-cli db:create",
     "production:db:migrate": "NODE_ENV=production sequelize-cli db:migrate"
   },
