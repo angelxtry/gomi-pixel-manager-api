@@ -28,6 +28,7 @@
     "fastify-url-data": "^3.0.3",
     "mysql2": "^2.2.5",
     "pino-pretty": "^4.7.1",
+    "qs": "^6.10.1",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
     "webpack": "^5.25.1"
