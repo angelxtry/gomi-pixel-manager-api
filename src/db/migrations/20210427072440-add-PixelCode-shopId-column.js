@@ -1,5 +1,6 @@
 'use strict';
 
+const faker = require('faker');
 const { fetchData, map, now } = require('./utils');
 
 module.exports = {
