@@ -8,10 +8,8 @@ class PixelCode extends Model {
    */
   static associate(models) {
     // define association here
-    PixelCode.belongsTo(models.Brand, {
-      targetKey: "id",
-      foreignKey: "brandId",
-    });
+    PixelCode.belongsTo(models.Brand, { targetKey: "id", foreignKey: "brandId" });
+    PixelCode.belongsTo(models.Shop, { targetKey: "id", foreignKey: "shopId" });
   }
 }
 

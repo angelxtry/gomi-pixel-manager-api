@@ -5,8 +5,9 @@ import config from "../config";
 import brandModel from "./brand";
 import productPageModel from "./productPage";
 import pixelCodeModel from "./pixelCode";
+import shopModel from "./shop";
 
-const modelMakers = [brandModel, productPageModel, pixelCodeModel];
+const modelMakers = [brandModel, productPageModel, pixelCodeModel, shopModel];
 
 // DB 셋업
 const db = {};
