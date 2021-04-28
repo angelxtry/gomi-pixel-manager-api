@@ -4,7 +4,9 @@ export const SEARCH_QUERY_BASE = `
 SELECT
   PixelCode.id                  AS \`id\`
   , PixelCode.code              AS \`code\`
-  , PixelCode.shopName          AS \`shopName\`
+  
+  , Shop.id                     AS \`Shop.id\`
+  , Shop.name                   AS \`Shop.name\`
 
   , Brand.id                    AS \`Brand.id\`
   , Brand.name                  AS \`Brand.name\`
@@ -15,6 +17,7 @@ SELECT
   , ProductPage.uniqueNumber    AS \`Brand.ProductPage.uniqueNumber\`
 FROM PixelCodes AS PixelCode
 INNER JOIN Brands AS Brand ON Brand.id = PixelCode.BrandId
+INNER JOIN Shops AS Shop ON Shop.id = PixelCode.shopId
 INNER JOIN ProductPages AS ProductPage ON ProductPage.BrandId = Brand.id
 WHERE
 `;

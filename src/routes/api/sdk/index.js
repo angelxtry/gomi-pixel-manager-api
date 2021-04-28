@@ -45,19 +45,22 @@ export default async function SDKRouter(app, options) {
    *  [
    *    {
    *       "id": 1,
-   *       "code": "83569819760",
-   *       "shopName": "haravan",
+   *       "code": "40293783694",
+   *       "Shop": {
+   *           "id": 67,
+   *           "name": "haravan"
+   *       },
    *       "Brand": {
    *           "id": 1,
    *           "name": "Gomi",
    *           "platformApiId": null,
    *           "ProductPage": {
    *               "id": 1,
-   *               "title": "Refined Frozen Computer",
-   *               "uniqueNumber": 92256
+   *               "title": "Unbranded Plastic Chair",
+   *               "uniqueNumber": 6569
    *           }
    *       }
-   *    }
+   *     }
    *  ]
    */
   app.get('/pixelCode/findAll', async (request, reply) => {
@@ -101,19 +104,22 @@ export default async function SDKRouter(app, options) {
    *  [
    *    {
    *       "id": 1,
-   *       "code": "83569819760",
-   *       "shopName": "haravan",
+   *       "code": "40293783694",
+   *       "Shop": {
+   *           "id": 67,
+   *           "name": "haravan"
+   *       },
    *       "Brand": {
    *           "id": 1,
    *           "name": "Gomi",
    *           "platformApiId": null,
    *           "ProductPage": {
    *               "id": 1,
-   *               "title": "Refined Frozen Computer",
-   *               "uniqueNumber": 92256
+   *               "title": "Unbranded Plastic Chair",
+   *               "uniqueNumber": 6569
    *           }
    *       }
-   *    }
+   *     }
    *  ]
    */
   app.get('/pixelCode/findByProductPage/:shopName/:uniqueNumber', async (request, reply) => {
@@ -122,7 +128,7 @@ export default async function SDKRouter(app, options) {
     const { shopName, uniqueNumber } = request.params;
     const { PixelCode } = app.db;
 
-    const RAW_QUERY = `${SEARCH_QUERY_BASE} PixelCode.shopName = :shopName AND (ProductPage.uniqueNumber = :uniqueNumber)`
+    const RAW_QUERY = `${SEARCH_QUERY_BASE} Shop.name = :shopName AND (ProductPage.uniqueNumber = :uniqueNumber)`
     return await app.db.sequelize.query(RAW_QUERY, {
       type: QueryTypes.SELECT,
       replacements: { shopName, uniqueNumber },

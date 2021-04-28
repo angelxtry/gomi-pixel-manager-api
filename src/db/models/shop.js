@@ -8,7 +8,7 @@ class Shop extends Model {
    */
   static associate(models) {
     // define association here
-    Shop.hasMany(models.PixelCode, { foreignKey: 'shopId', as: 'pixelCodes' });
+    Shop.hasMany(models.PixelCode);
   }
 }
 

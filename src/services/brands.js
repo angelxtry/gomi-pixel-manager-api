@@ -117,10 +117,8 @@ export class BrandService extends ResourceCRUDService {
   }
 
   async __bulkUpsertAssociatedPixelCodes(brand, pixelCodeDataList) {
-    const findPixelCodeOfBrand = (id) =>
-      (brand.PixelCodes || []).filter((record) => record.id === id)[0];
-    const compareDataValueIsSame = (origin, target) =>
-      JSON.stringify(origin) === JSON.stringify({ ...origin, ...target });
+    const findPixelCodeOfBrand = (id) => (brand.PixelCodes || []).filter((record) => record.id === id)[0];
+    const compareDataValueIsSame = (origin, target) => JSON.stringify(origin) === JSON.stringify({ ...origin, ...target });
     const upsertPixelCode = async (pixelCodeData) => {
       const pixelCode = findPixelCodeOfBrand(pixelCodeData.id);
       if (pixelCode) {

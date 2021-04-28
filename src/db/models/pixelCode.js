@@ -11,6 +11,10 @@ class PixelCode extends Model {
     PixelCode.belongsTo(models.Brand, { targetKey: "id", foreignKey: "brandId" });
     PixelCode.belongsTo(models.Shop, { targetKey: "id", foreignKey: "shopId" });
   }
+
+  get isSuperPixel() {
+    return !!this.brandId;
+  }
 }
 
 export default (sequelize, DataTypes) => {
