@@ -11,6 +11,8 @@ const brandProperties = {
       properties: {
         id: { type: "number" },
         code: { type: "string" },
+        shopId: { type: "number" },
+        brandId: { type: "number" },
       },
     },
   },

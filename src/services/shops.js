@@ -18,12 +18,18 @@ export class ShopService extends ResourceCRUDService {
 
     const shops = await this.Shop.findAll({
       where,
-      include: [{
-        model: this.db.PixelCode,
-        attributes: ['id', 'code', 'brandId', 'shopId'],
-        // where: { brandId: 1 },
-        required: false,
-      }]
+      include: [
+        {
+          model: this.db.PixelCode,
+          attributes: ['id', 'code', 'brandId', 'shopId'],
+          // where: { brandId: 1 },
+          required: false,
+          include: {
+            model: this.db.Brand,
+            attributes: ['id', 'name']
+          },
+        },
+      ]
     });
 
     return shops;
@@ -97,7 +103,12 @@ export class ShopService extends ResourceCRUDService {
       where: { id, ...query },
       include: [{
         model: this.db.PixelCode,
-        attributes: ['id', 'code', 'brandId', 'shopId']
+        attributes: ['id', 'code', 'brandId', 'shopId'],
+        required: false,
+        include: {
+          model: this.db.Brand,
+          attributes: ['id', 'name']
+        },
       }]
     });
 

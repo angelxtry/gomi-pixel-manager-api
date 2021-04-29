@@ -14,7 +14,10 @@ export class PixelCodeService extends ResourceCRUDService {
    */
   async getAll({ filter = {} }) {
     const pixelCodes = await this.PixelCode.findAll({
-      include: this.db.Brand,
+      include: [
+        { model: this.db.Brand },
+        { model: this.db.Shop },
+      ],
     });
 
     console.log(pixelCodes);

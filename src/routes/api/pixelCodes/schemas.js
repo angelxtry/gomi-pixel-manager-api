@@ -1,15 +1,25 @@
 const pixelCodeProperties = {
   id: { type: "number" },
-  brandId: { type: "number" },
+  shopId: { type: "number", nullable: true },
+  brandId: { type: "number", nullable: true },
+  Shop: {
+    type: "object",
+    nullable: true,
+    properties: {
+      id: { type: "number" },
+      name: { type: "string" },
+      domain: { type: "string" },
+    }
+  },
   Brand: {
     type: "object",
+    nullable: true,
     properties: {
       id: { type: "number" },
       name: { type: "string" },
     },
   },
   code: { type: "string" },
-  shopName: { type: "string", nullable: true },
   createdAt: { type: "string" },
   updatedAt: { type: "string" },
 };
