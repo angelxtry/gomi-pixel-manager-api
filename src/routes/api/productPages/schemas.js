@@ -13,7 +13,8 @@ const productPageProperties = {
           properties: {
             id: { type: "number" },
             code: { type: "string" },
-            shopName: { type: "string", nullable: true },
+            shopId: { type: "number" },
+            brandId: { type: "number" },
           }
         }
       }
