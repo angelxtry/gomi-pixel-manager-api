@@ -1,4 +1,4 @@
-import qs from 'qs';
+import queryParser from "../../utils/queryParser";
 import { ShopService } from "../../../services/shops";
 
 export default async function shopRouter(app, options) {
@@ -36,10 +36,9 @@ export default async function shopRouter(app, options) {
       ]
    */
   app.get("/", async (request, reply) => {
-    app.log.info("request.query", request.query);
-    const query = qs.parse(request.query);
+    const query = queryParser.parse(request.query);
 
-    return await shopService.getAll(query);
+    return shopService.getAll(query);
   });
 
   /**
@@ -65,9 +64,9 @@ export default async function shopRouter(app, options) {
    */
   app.get("/:id", async (request, reply) => {
     const { params: { id } } = request;
-    const query = qs.parse(request.query);
+    const query = queryParser.parse(request.query);
 
-    return await shopService.getOne({ id, ...query });
+    return shopService.getOne({ id, ...query });
   });
 
   // create
@@ -75,7 +74,7 @@ export default async function shopRouter(app, options) {
   app.post("/", async (request, reply) => {
     const { body } = request;
 
-    return await shopService.create({ resourceData: body });
+    return shopService.create({ resourceData: body });
   });
 
   // update
@@ -83,7 +82,7 @@ export default async function shopRouter(app, options) {
   app.patch("/:id", async (request, reply) => {
     const { params: { id }, body } = request;
 
-    return await shopService.update({ id, resourceData: body });
+    return shopService.update({ id, resourceData: body });
   });
 
   // destroy
@@ -91,6 +90,6 @@ export default async function shopRouter(app, options) {
   app.delete("/:id", async (request, reply) => {
     const { params: { id } } = request;
 
-    return await shopService.destroy({ id });
+    return shopService.destroy({ id });
   });
 }

@@ -24,12 +24,16 @@ export class BrandService extends ResourceCRUDService {
   /**
    * function to get all
    *
-   * @param { filter: object } { filter = {} }
-   * @returns {Promise<{ id: number }>[]} array
-   * @memberof BrandService
+   * @param where
+   * @returns {Promise<Model[]>}
    */
-  async getAll({ filter = {} }) {
-    const brands = await this.Brand.findAll({ include: this.db.PixelCode });
+  async getAll(where = {}) {
+    const brands = await this.Brand.findAll({
+      where,
+      include: [
+        { model: this.db.PixelCode },
+      ]
+    });
 
     return brands;
   }
@@ -99,11 +103,10 @@ export class BrandService extends ResourceCRUDService {
    * PRIVATE
    **********************/
 
-  async __getResource(id) {
-    const checkDataIsEmpty = (data) =>
-      data instanceof Array ? data.length : data;
+  async __getResource(id, query = {}) {
+    const checkDataIsEmpty = (data) => data instanceof Array ? data.length : data;
     const brand = await this.Brand.findOne({
-      where: { id },
+      where: { id, ...query },
       include: this.db.PixelCode,
     });
 

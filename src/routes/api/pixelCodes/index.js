@@ -1,3 +1,4 @@
+import queryParser from "../../utils/queryParser";
 import { PixelCodeService } from "../../../services/pixelCodes";
 import {
   createSchema,
@@ -12,56 +13,37 @@ export default async function pixelCodeRouter(app, options) {
 
   // get all
   app.get("/", { schema: getAllSchema }, async (request, reply) => {
-    app.log.info("request.query", request.query);
-    const pixelCodes = await pixelCodeService.getAll({});
-    return pixelCodes;
+    const query = queryParser.parse(request.query);
+
+    return pixelCodeService.getAll(query);
   });
 
   // get one
   app.get("/:id", { schema: getOneSchema }, async (request, reply) => {
-    const {
-      params: { id },
-    } = request;
+    const { params: { id } } = request;
+    const query = queryParser.parse(request.query);
 
-    app.log.info("pixelCodeId", id);
-
-    const pixelCode = await pixelCodeService.getOne({ id });
-    return pixelCode;
+    return pixelCodeService.getOne({ id, ...query });
   });
 
   // create
   app.post("/", { schema: createSchema }, async (request, reply) => {
     const { body } = request;
 
-    const created = await pixelCodeService.create({ resourceData: body });
-
-    return created;
+    return pixelCodeService.create({ resourceData: body });
   });
 
   // update
   app.patch("/:id", { schema: updateSchema }, async (request, reply) => {
-    const {
-      params: { id },
-      body,
-    } = request;
+    const { params: { id }, body } = request;
 
-    app.log.info("pixelCodeId", id);
-    app.log.info("body", body);
-
-    const updated = await pixelCodeService.update({ id, resourceData: body });
-
-    return updated;
+    return await pixelCodeService.update({ id, resourceData: body });
   });
 
   // destroy
   app.delete("/:id", { schema: destroySchema }, async (request, reply) => {
-    const {
-      params: { id },
-    } = request;
+    const { params: { id } } = request;
 
-    app.log.info("pixelCodeId", id);
-
-    const deleted = await pixelCodeService.destroy({ id });
-    return deleted;
+    return pixelCodeService.destroy({ id });
   });
 }

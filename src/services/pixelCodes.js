@@ -12,15 +12,15 @@ export class PixelCodeService extends ResourceCRUDService {
    * @returns {Promise<{ id: number }>[]} array
    * @memberof ProductPageService
    */
-  async getAll({ filter = {} }) {
+  async getAll(where = {}) {
     const pixelCodes = await this.PixelCode.findAll({
+      where,
       include: [
         { model: this.db.Brand },
         { model: this.db.Shop },
       ],
     });
 
-    console.log(pixelCodes);
     return pixelCodes;
   }
 
@@ -28,11 +28,10 @@ export class PixelCodeService extends ResourceCRUDService {
    * PRIVATE
    **********************/
 
-  async __getResource(id) {
-    const checkDataIsEmpty = (data) =>
-      data instanceof Array ? data.length : data;
+  async __getResource(id, query = {}) {
+    const checkDataIsEmpty = (data) => data instanceof Array ? data.length : data;
     const pixelCode = await this.PixelCode.findOne({
-      where: { id },
+      where: { id, ...query },
       include: this.db.Brand,
     });
 

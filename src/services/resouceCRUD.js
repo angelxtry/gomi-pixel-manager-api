@@ -20,12 +20,13 @@ export class ResourceCRUDService {
   /**
    * function to get all
    *
-   * @param { filter: object } { filter = {} }
-   * @returns {Promise<{ id: number }>[]} array
-   * @memberof ResourceCRUDService
+   * @param where
+   * @returns {Promise<Model[]>}
    */
-  async getAll({ filter = {} }) {
-    const resources = await this[this.subjectName].findAll();
+  async getAll(where = {}) {
+    const resources = await this[this.subjectName].findAll({
+      where
+    });
 
     return resources;
   }
@@ -33,16 +34,14 @@ export class ResourceCRUDService {
   /**
    * function to get one
    *
-   * @param { { id: number } } { id }
-   * @returns {Promise<{id: number}>} object
-   * @memberof ResourceCRUDService
+   * @param id
+   * @param query
+   * @returns {Promise<*>}
    */
-  async getOne({ id }) {
+  async getOne({ id, ...query }) {
     this.__error(() => !id, 400, "id is needed");
 
-    const resource = await this.__getResource(id);
-
-    return resource;
+    return this.__getResource(id, query);
   }
 
   /**
@@ -95,10 +94,11 @@ export class ResourceCRUDService {
    * PRIVATE
    **********************/
 
-  async __getResource(id) {
-    const checkDataIsEmpty = (data) =>
-      data instanceof Array ? data.length : data;
-    const resourceData = await this[this.subjectName].findByPk(id);
+  async __getResource(id, query = {}) {
+    const checkDataIsEmpty = (data) => data instanceof Array ? data.length : data;
+    const resourceData = await this[this.subjectName].findOne({
+      where: { id, ...query }
+    });
 
     this.__error(
       () => !checkDataIsEmpty(resourceData),

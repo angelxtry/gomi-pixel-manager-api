@@ -6,6 +6,7 @@ import {
   updateSchema,
   destroySchema,
 } from "./schemas";
+import queryParser from "../../utils/queryParser";
 
 export default async function brandRouter(app, options) {
   const brandService = new BrandService(app);
@@ -39,10 +40,9 @@ export default async function brandRouter(app, options) {
         ]
    */
   app.get("/", { schema: getAllSchema }, async (request, reply) => {
-    app.log.info("request.query", request.query);
-    const brands = await brandService.getAll({});
-    console.log(brands);
-    return brands;
+    const query = queryParser.parse(request.query);
+
+    return brandService.getAll(query);
   });
 
   /**
@@ -76,14 +76,10 @@ export default async function brandRouter(app, options) {
       }
    */
   app.get("/:id", { schema: getOneSchema }, async (request, reply) => {
-    const {
-      params: { id },
-    } = request;
+    const { params: { id } } = request;
+    const query = queryParser.parse(request.query);
 
-    app.log.info("brandId", id);
-
-    const brand = await brandService.getOne({ id });
-    return brand;
+    return brandService.getOne({ id, ...query });
   });
 
   // create
@@ -91,37 +87,22 @@ export default async function brandRouter(app, options) {
   app.post("/", { schema: createSchema }, async (request, reply) => {
     const { body } = request;
 
-    const created = await brandService.create({ resourceData: body });
-
-    return created;
+    return brandService.create({ resourceData: body });
   });
 
   // update
   // => Updated Brand Object (include 'PixelRecords')
   app.patch("/:id", { schema: updateSchema }, async (request, reply) => {
-    const {
-      params: { id },
-      body,
-    } = request;
+    const { params: { id }, body } = request;
 
-    app.log.info("brandId", id);
-    app.log.info("body", body);
-
-    const updated = await brandService.update({ id, resourceData: body });
-
-    return updated;
+    return brandService.update({ id, resourceData: body });
   });
 
   // destroy
   // => Destroyed Brand Object
   app.delete("/:id", { schema: destroySchema }, async (request, reply) => {
-    const {
-      params: { id },
-    } = request;
+    const { params: { id } } = request;
 
-    app.log.info("brandId", id);
-
-    const deleted = await brandService.destroy({ id });
-    return deleted;
+    return brandService.destroy({ id });
   });
 }

@@ -22,7 +22,6 @@ export class ShopService extends ResourceCRUDService {
         {
           model: this.db.PixelCode,
           attributes: ['id', 'code', 'brandId', 'shopId'],
-          // where: { brandId: 1 },
           required: false,
           include: {
             model: this.db.Brand,
@@ -39,9 +38,9 @@ export class ShopService extends ResourceCRUDService {
   /**
    * function to get one
    *
-   * @param { { id: number } } { id }
-   * @returns {Promise<{id: number}>} object
-   * @memberof BrandService
+   * @param id
+   * @param query
+   * @returns {Promise<*>}
    */
   async getOne({ id, ...query }) {
     this.__error(() => !id, 400, "id is needed");

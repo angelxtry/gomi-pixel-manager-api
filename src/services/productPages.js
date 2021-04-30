@@ -22,13 +22,15 @@ export class ProductPageService extends ResourceCRUDService {
   /**
    * function to get all
    *
-   * @param { filter: object } { filter = {} }
-   * @returns {Promise<{ id: number }>[]} array
-   * @memberof ProductPageService
+   * @param where
+   * @returns {Promise<Model[]>}
    */
-  async getAll({ filter = {} }) {
+  async getAll(where = {}) {
     const productPages = await this.ProductPage.findAll({
-      include: this.db.Brand,
+      where,
+      include: [
+        { model: this.db.Brand },
+      ]
     });
 
     return productPages;
@@ -100,11 +102,10 @@ export class ProductPageService extends ResourceCRUDService {
    * PRIVATE
    **********************/
 
-  async __getResource(id) {
-    const checkDataIsEmpty = (data) =>
-      data instanceof Array ? data.length : data;
+  async __getResource(id, query = {}) {
+    const checkDataIsEmpty = (data) => data instanceof Array ? data.length : data;
     const productPage = await this.ProductPage.findOne({
-      where: { id },
+      where: { id, ...query },
       include: {
         model: this.db.Brand,
         include: this.db.PixelCode

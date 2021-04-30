@@ -6,6 +6,7 @@ import {
   updateSchema,
   destroySchema,
 } from "./schemas";
+import queryParser from "../../utils/queryParser";
 
 export default async function productPageRouter(app, options) {
   const productPageService = new ProductPageService(app);
@@ -46,9 +47,9 @@ export default async function productPageRouter(app, options) {
       ]
    */
   app.get("/", { schema: getAllSchema }, async (request, reply) => {
-    app.log.info("request.query", request.query);
-    const productPages = await productPageService.getAll({});
-    return productPages;
+    const query = queryParser.parse(request.query);
+
+    return productPageService.getAll(query);
   });
 
   /**
@@ -71,14 +72,10 @@ export default async function productPageRouter(app, options) {
       }
    */
   app.get("/:id", { schema: getOneSchema }, async (request, reply) => {
-    const {
-      params: { id },
-    } = request;
+    const { params: { id } } = request;
+    const query = queryParser.parse(request.query);
 
-    app.log.info("productPageId", id);
-
-    const productPage = await productPageService.getOne({ id });
-    return productPage;
+    return productPageService.getOne({ id, ...query });
   });
 
   // create
@@ -86,36 +83,21 @@ export default async function productPageRouter(app, options) {
   app.post("/", { schema: createSchema }, async (request, reply) => {
     const { body } = request;
 
-    const created = await productPageService.create({ resourceData: body });
-
-    return created;
+    return productPageService.create({ resourceData: body });
   });
 
   // update
   // => Updated ProductPage Object (include 'Brand')
   app.patch("/:id", { schema: updateSchema }, async (request, reply) => {
-    const {
-      params: { id },
-      body,
-    } = request;
+    const { params: { id }, body } = request;
 
-    app.log.info("productPageId", id);
-    app.log.info("body", body);
-
-    const updated = await productPageService.update({ id, resourceData: body });
-
-    return updated;
+    return productPageService.update({ id, resourceData: body });
   });
 
   // destroy
   app.delete("/:id", { schema: destroySchema }, async (request, reply) => {
-    const {
-      params: { id },
-    } = request;
+    const { params: { id } } = request;
 
-    app.log.info("productPageId", id);
-
-    const deleted = await productPageService.destroy({ id });
-    return deleted;
+    return productPageService.destroy({ id });
   });
 }
