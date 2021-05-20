@@ -5,7 +5,10 @@
     "db:migrate": "sequelize-cli db:migrate",
     "db:seed": "sequelize-cli db:seed:all",
     "production:db:create": "NODE_ENV=production sequelize-cli db:create",
-    "production:db:migrate": "NODE_ENV=production sequelize-cli db:migrate"
+    "production:db:migrate": "NODE_ENV=production sequelize-cli db:migrate",
+    "production:start": "pm2 start ecosystem.config.js --env production",
+    "production:restart": "pm2 restart server",
+    "production:gogogo": "yarn production:db:migrate && yarn production:restart"
   },
   "dependencies": {
     "@babel/node": "^7.13.12",
