@@ -64,6 +64,7 @@ export class ShopService extends ResourceCRUDService {
     this.__error(() => !resourceData, 400, `${this.resourceVar} is needed`);
 
     const shop = await this.Shop.create(resourceData);
+    await this.__bulkUpsertAssociatedPixelCodes(shop, resourceData.PixelCodes);
 
     return await this.__getResource(shop.id);
   }
@@ -77,6 +78,8 @@ export class ShopService extends ResourceCRUDService {
    */
   async update({ id, resourceData = {} }) {
     let shop = await this.__getResource(id);
+
+    await this.__bulkUpsertAssociatedPixelCodes(shop, resourceData.PixelCodes);
     shop = await shop.update(resourceData);
 
     return await this.__getResource(shop.id);
@@ -121,5 +124,27 @@ export class ShopService extends ResourceCRUDService {
     );
 
     return shop;
+  }
+
+  async __bulkUpsertAssociatedPixelCodes(shop, pixelCodeDataList) {
+    const findPixelCodeOfBrand = (id) => (shop.PixelCodes || []).filter((record) => record.id === id)[0];
+    const compareDataValueIsSame = (origin, target) => JSON.stringify(origin) === JSON.stringify({ ...origin, ...target });
+    const upsertPixelCode = async (pixelCodeData) => {
+      const pixelCode = findPixelCodeOfBrand(pixelCodeData.id);
+      if (pixelCode) {
+        if (!compareDataValueIsSame(pixelCode.dataValues, pixelCodeData)) {
+          await pixelCode.update(pixelCodeData);
+        }
+      } else {
+        await this.db.PixelCode.create({
+          ...pixelCodeData,
+          shopId: shop.id,
+        });
+      }
+    };
+
+    for (const pixelCodeData of pixelCodeDataList) {
+      await upsertPixelCode(pixelCodeData);
+    }
   }
 }
