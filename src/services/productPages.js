@@ -25,12 +25,15 @@ export class ProductPageService extends ResourceCRUDService {
    * @param where
    * @returns {Promise<Model[]>}
    */
-  async getAll(where = {}) {
+  async getAll(where = {}, { order }) {
     const productPages = await this.ProductPage.findAll({
       where,
       include: [
         { model: this.db.Brand },
-      ]
+      ],
+      order: [
+        order
+      ],
     });
 
     return productPages;

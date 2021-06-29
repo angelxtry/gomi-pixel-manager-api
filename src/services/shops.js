@@ -12,7 +12,7 @@ export class ShopService extends ResourceCRUDService {
    * @param where
    * @returns {Promise<Model[]>}
    */
-  async getAll(where = {}) {
+  async getAll(where = {}, { order }) {
     // where object 를 통해 검색 조건을 만드는 방법은 아래 링크를 참고해주세요.
     // https://sequelize.org/master/manual/eager-loading.html#complex-where-clauses-at-the-top-level
 
@@ -28,7 +28,10 @@ export class ShopService extends ResourceCRUDService {
             attributes: ['id', 'name']
           },
         },
-      ]
+      ],
+      order: [
+        order
+      ],
     });
 
     return shops;

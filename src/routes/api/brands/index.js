@@ -39,10 +39,13 @@ export default async function brandRouter(app, options) {
           ...
         ]
    */
-  app.get("/", { schema: getAllSchema }, async (request, reply) => {
-    const query = queryParser.parse(request.query);
+  app.get("/", async (request, reply) => {
+    const complexQuery = queryParser.parse(request.query);
+    const { sort, ...query } = complexQuery;
 
-    return brandService.getAll(query);
+    return brandService.getAll(query, {
+      order: sort ? JSON.parse(sort) : ['id', 'ASC']
+    });
   });
 
   /**

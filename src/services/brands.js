@@ -27,12 +27,15 @@ export class BrandService extends ResourceCRUDService {
    * @param where
    * @returns {Promise<Model[]>}
    */
-  async getAll(where = {}) {
+  async getAll(where = {}, { order }) {
     const brands = await this.Brand.findAll({
       where,
       include: [
         { model: this.db.PixelCode },
-      ]
+      ],
+      order: [
+        order
+      ],
     });
 
     return brands;

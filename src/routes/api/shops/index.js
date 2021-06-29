@@ -36,9 +36,12 @@ export default async function shopRouter(app, options) {
       ]
    */
   app.get("/", async (request, reply) => {
-    const query = queryParser.parse(request.query);
+    const complexQuery = queryParser.parse(request.query);
+    const { sort, ...query } = complexQuery;
 
-    return shopService.getAll(query);
+    return shopService.getAll(query, {
+      order: sort ? JSON.parse(sort) : ['id', 'ASC']
+    });
   });
 
   /**
