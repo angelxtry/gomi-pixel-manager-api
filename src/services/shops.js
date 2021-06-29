@@ -95,9 +95,10 @@ export class ShopService extends ResourceCRUDService {
   //  * @memberof ShopService
   //  */
   async destroy({ id }) {
-    const shop = await this.__getResource(id);
+    const shopBefore = await this.__getResource(id);
 
-    return await shop.destroy();
+    await this.db.PixelCode.destroy({ where: { id: shopBefore.PixelCodes.map(rec => rec.id) } });
+    return await shopBefore.destroy();
   }
 
   /**********************

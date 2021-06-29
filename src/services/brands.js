@@ -100,7 +100,7 @@ export class BrandService extends ResourceCRUDService {
   async destroy({ id }) {
     const brandBefore = await this.__getResource(id);
 
-    await each((pixelCode) => pixelCode.destroy(), brandBefore.PixelCodes);
+    await this.db.PixelCode.destroy({ where: { id: brandBefore.PixelCodes.map(rec => rec.id) } });
     return await brandBefore.destroy();
   }
 
