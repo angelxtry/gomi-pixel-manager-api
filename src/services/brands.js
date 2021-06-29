@@ -83,6 +83,8 @@ export class BrandService extends ResourceCRUDService {
     let brand = await this.__getResource(id);
 
     await this.__bulkUpsertAssociatedPixelCodes(brand, resourceData.PixelCodes);
+    await this.__bulkDestroyAssociatedPixelCodes(brand, resourceData.PixelCodes);
+
     brand = await brand.update(resourceData);
 
     return await this.__getResource(brand.id);
@@ -142,6 +144,15 @@ export class BrandService extends ResourceCRUDService {
     for (const pixelCodeData of pixelCodeDataList) {
       await upsertPixelCode(pixelCodeData);
     }
+  }
+
+  async __bulkDestroyAssociatedPixelCodes(brand, pixelCodeDataList) {
+    const pixelCodeListToDestroy = brand.PixelCodes.filter(pixelCodeRecord => !pixelCodeDataList.filter(pixelCodeData => pixelCodeData.id === pixelCodeRecord.id)[0])
+    const pixelCodeIdListToDestroy = pixelCodeListToDestroy.map(record => record.id);
+
+    return this.db.PixelCode.destroy({
+      where: { id: pixelCodeIdListToDestroy }
+    });
   }
 
   // /**

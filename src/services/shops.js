@@ -80,6 +80,8 @@ export class ShopService extends ResourceCRUDService {
     let shop = await this.__getResource(id);
 
     await this.__bulkUpsertAssociatedPixelCodes(shop, resourceData.PixelCodes);
+    await this.__bulkDestroyAssociatedPixelCodes(shop, resourceData.PixelCodes);
+
     shop = await shop.update(resourceData);
 
     return await this.__getResource(shop.id);
@@ -127,10 +129,10 @@ export class ShopService extends ResourceCRUDService {
   }
 
   async __bulkUpsertAssociatedPixelCodes(shop, pixelCodeDataList) {
-    const findPixelCodeOfBrand = (id) => (shop.PixelCodes || []).filter((record) => record.id === id)[0];
+    const findPixelCodeOfShop = (id) => (shop.PixelCodes || []).filter((record) => record.id === id)[0];
     const compareDataValueIsSame = (origin, target) => JSON.stringify(origin) === JSON.stringify({ ...origin, ...target });
     const upsertPixelCode = async (pixelCodeData) => {
-      const pixelCode = findPixelCodeOfBrand(pixelCodeData.id);
+      const pixelCode = findPixelCodeOfShop(pixelCodeData.id);
       if (pixelCode) {
         if (!compareDataValueIsSame(pixelCode.dataValues, pixelCodeData)) {
           await pixelCode.update(pixelCodeData);
@@ -146,5 +148,14 @@ export class ShopService extends ResourceCRUDService {
     for (const pixelCodeData of pixelCodeDataList) {
       await upsertPixelCode(pixelCodeData);
     }
+  }
+
+  async __bulkDestroyAssociatedPixelCodes(shop, pixelCodeDataList) {
+    const pixelCodeListToDestroy = shop.PixelCodes.filter(pixelCodeRecord => !pixelCodeDataList.filter(pixelCodeData => pixelCodeData.id === pixelCodeRecord.id)[0])
+    const pixelCodeIdListToDestroy = pixelCodeListToDestroy.map(record => record.id);
+
+    return this.db.PixelCode.destroy({
+      where: { id: pixelCodeIdListToDestroy }
+    });
   }
 }
