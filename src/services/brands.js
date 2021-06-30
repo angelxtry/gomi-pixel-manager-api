@@ -31,7 +31,10 @@ export class BrandService extends ResourceCRUDService {
     const brands = await this.Brand.findAll({
       where,
       include: [
-        { model: this.db.PixelCode },
+        {
+          model: this.db.PixelCode,
+          attributes: ['id', 'name', 'code', 'brandId', 'shopId'],
+        },
       ],
       order: [
         order
@@ -112,7 +115,10 @@ export class BrandService extends ResourceCRUDService {
     const checkDataIsEmpty = (data) => data instanceof Array ? data.length : data;
     const brand = await this.Brand.findOne({
       where: { id, ...query },
-      include: this.db.PixelCode,
+      include: {
+        model: this.db.PixelCode,
+        attributes: ['id', 'name', 'code', 'brandId', 'shopId'],
+      },
     });
 
     this.__error(
@@ -147,7 +153,12 @@ export class BrandService extends ResourceCRUDService {
   }
 
   async __bulkDestroyAssociatedPixelCodes(brand, pixelCodeDataList) {
-    const pixelCodeListToDestroy = brand.PixelCodes.filter(pixelCodeRecord => !pixelCodeDataList.filter(pixelCodeData => pixelCodeData.id === pixelCodeRecord.id)[0])
+    const pixelCodeListToDestroy = brand.PixelCodes
+      // brand 리소스에서 삭제하고자 하는 픽셀코드는 기본적으로 슈퍼픽셀이 아닌 일반픽셀임을 가정합니다.
+      .filter(pixelCodeRecord => pixelCodeRecord.brandId)
+
+      // 기존에 관계지어진 픽셀코드이지만 update 요청 시 함께 담겨오지 않은 픽셀코드가 있다면, 제거 대상으로 추론합니다.
+      .filter(pixelCodeRecord => !pixelCodeDataList.filter(pixelCodeData => pixelCodeData.id === pixelCodeRecord.id)[0])
     const pixelCodeIdListToDestroy = pixelCodeListToDestroy.map(record => record.id);
 
     return this.db.PixelCode.destroy({

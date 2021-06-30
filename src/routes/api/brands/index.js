@@ -78,7 +78,7 @@ export default async function brandRouter(app, options) {
           ]
       }
    */
-  app.get("/:id", { schema: getOneSchema }, async (request, reply) => {
+  app.get("/:id", async (request, reply) => {
     const { params: { id } } = request;
     const query = queryParser.parse(request.query);
 

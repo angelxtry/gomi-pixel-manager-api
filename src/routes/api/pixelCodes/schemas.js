@@ -20,6 +20,7 @@ const pixelCodeProperties = {
     },
   },
   code: { type: "string" },
+  name: { type: "string", nullable: true },
   createdAt: { type: "string" },
   updatedAt: { type: "string" },
 };
@@ -45,7 +46,7 @@ const queryStringJsonSchema = {
 const bodyCreateJsonSchema = {
   type: "object",
   properties: pixelCodeProperties,
-  required: ["brandId", "code"],
+  required: ["brandId", "code", "name"],
 };
 
 const bodyUpdateJsonSchema = {

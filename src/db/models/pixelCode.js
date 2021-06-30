@@ -21,6 +21,7 @@ export default (sequelize, DataTypes) => {
   PixelCode.init(
     {
       code: DataTypes.STRING,
+      name: DataTypes.STRING,
     },
     {
       sequelize,

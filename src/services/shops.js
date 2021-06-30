@@ -16,12 +16,18 @@ export class ShopService extends ResourceCRUDService {
     // where object 를 통해 검색 조건을 만드는 방법은 아래 링크를 참고해주세요.
     // https://sequelize.org/master/manual/eager-loading.html#complex-where-clauses-at-the-top-level
 
+    const {
+      PixelCode: pixelCodeWhere,
+      ...shopWhere
+    } = where;
+
     const shops = await this.Shop.findAll({
-      where,
+      shopWhere,
       include: [
         {
           model: this.db.PixelCode,
-          attributes: ['id', 'code', 'brandId', 'shopId'],
+          where: pixelCodeWhere,
+          attributes: ['id', 'name', 'code', 'brandId', 'shopId'],
           required: false,
           include: {
             model: this.db.Brand,
@@ -107,11 +113,18 @@ export class ShopService extends ResourceCRUDService {
 
   async __getResource(id, query = {}) {
     const checkDataIsEmpty = (data) => data instanceof Array ? data.length : data;
+
+    const {
+      PixelCode: pixelCodeWhere,
+      ...shopWhere
+    } = query;
+
     const shop = await this.Shop.findOne({
-      where: { id, ...query },
+      where: { id, ...shopWhere },
       include: [{
         model: this.db.PixelCode,
-        attributes: ['id', 'code', 'brandId', 'shopId'],
+        where: pixelCodeWhere,
+        attributes: ['id', 'name', 'code', 'brandId', 'shopId'],
         required: false,
         include: {
           model: this.db.Brand,
@@ -152,7 +165,12 @@ export class ShopService extends ResourceCRUDService {
   }
 
   async __bulkDestroyAssociatedPixelCodes(shop, pixelCodeDataList) {
-    const pixelCodeListToDestroy = shop.PixelCodes.filter(pixelCodeRecord => !pixelCodeDataList.filter(pixelCodeData => pixelCodeData.id === pixelCodeRecord.id)[0])
+    const pixelCodeListToDestroy = shop.PixelCodes
+      // shop 리소스에서 삭제하고자 하는 픽셀코드는 기본적으로 슈퍼픽셀을 가정합니다.
+      .filter(pixelCodeRecord => !pixelCodeRecord.brandId)
+
+      // 기존에 관계지어진 픽셀코드이지만 update 요청 시 함께 담겨오지 않은 픽셀코드가 있다면, 제거 대상으로 추론합니다.
+      .filter(pixelCodeRecord => !pixelCodeDataList.filter(pixelCodeData => pixelCodeData.id === pixelCodeRecord.id)[0])
     const pixelCodeIdListToDestroy = pixelCodeListToDestroy.map(record => record.id);
 
     return this.db.PixelCode.destroy({
