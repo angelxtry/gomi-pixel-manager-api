@@ -39,11 +39,17 @@ module.exports.findRecord = async function findRecord(q, tableName, id) {
 
 module.exports.createRecord = async function createRecord(q, tableName, data) {
   const dateTime = now();
-  const [ id, _count ] = await q.insert(null, tableName, {
+  // const [ id, _count ] = await q.insert(null, tableName, {
+  //   ...data,
+  //   createdAt: dateTime,
+  //   updatedAt: dateTime,
+  // });
+  const id = await q.bulkInsert(tableName, [{
     ...data,
     createdAt: dateTime,
     updatedAt: dateTime,
-  });
+  }], {});
+
   const [ dataList ] = await q.sequelize.query(`SELECT * FROM ${tableName} WHERE id = ${id} LIMIT 1;`);
   return dataList[0];
 }
